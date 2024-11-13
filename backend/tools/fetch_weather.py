@@ -4,14 +4,14 @@ import os
 from dotenv import load_dotenv
 
 class FetchWeatherTool(BaseTool):
-    name = "fetch_weather"
-    description = "Fetch weather information for a given location."
+    name: str = "fetch_weather"
+    description: str = "Fetch weather information for a given location."
 
     def __init__(self):
         super().__init__()
         load_dotenv()  
 
-    def _run(self, location: str):
+    def _run(self, location: str)->str:
         api_key = os.getenv("WEATHERSTACK_API_KEY")
         if not api_key:
             return "Weatherstack API key not found. Please set the WEATHERSTACK_API_KEY environment variable."
@@ -34,5 +34,5 @@ class FetchWeatherTool(BaseTool):
         except requests.exceptions.RequestException as e:
             return f"Error fetching weather data: {e}"
 
-    async def _arun(self, location: str):
+    async def _arun(self, location: str)->str:
         raise NotImplementedError("Async not implemented for FetchWeatherTool.")

@@ -4,10 +4,10 @@ from bs4 import BeautifulSoup
 import asyncio
 
 class WebSearchTool(BaseTool):
-    name = "web_search"
-    description = "Perform a web search and retrieve information."
+    name:str = "web_search"
+    description:str = "Perform a web search and retrieve information."
 
-    def _run(self, query: str):
+    def _run(self, query: str) ->str:
         with DDGS() as ddgs:
             results = ddgs.text(query, max_results=5)
             if not results:
@@ -15,7 +15,7 @@ class WebSearchTool(BaseTool):
             summaries = [BeautifulSoup(result['body'], 'html.parser').get_text() for result in results]
             return "\n\n".join(summaries)
 
-    async def _arun(self, query: str):
+    async def _arun(self, query: str)->str:
         async with DDGS() as ddgs:
             results = [result async for result in ddgs.text(query, max_results=5)]
             if not results:
